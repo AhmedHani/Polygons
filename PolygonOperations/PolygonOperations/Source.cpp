@@ -31,8 +31,8 @@ vector<std::string> split(string &text, char sep) {
 
 ///////////////// STRUCTURES ////////////////////
 struct Point {
-	float x;
-	float y;
+	int x;
+	int y;
 };
 
 class Polygon {
@@ -41,13 +41,20 @@ private:
 	int num_points;
 
 public:
-	Polygon(Point* p_points) {
+	void set_points(Point* p_points) {
 		this->p_points = p_points;
-		this->num_points = (sizeof(p_points)/sizeof(*p_points));
+	}
+
+	void set_num_points(int num_of_points) {
+		this->num_points = num_of_points;
 	}
 
 	int get_num_points() {
 		return this->num_points;
+	}
+
+	Point get_point(int index) {
+		return this->p_points[index];
 	}
 
 	int get_max_x() {
@@ -95,7 +102,7 @@ public:
 		return max_point.y;
 	}
 
-	int get_min_x() {
+	int get_min_y() {
 		int max = INT_MAX;
 		Point max_point;
 
@@ -135,8 +142,8 @@ const string level_3_supported_operations[] = {
 ////////////// END OF CONSTANTS ////////////////
 
 
-Polygon* polygons;
-pair<string, int>* operations;
+vector<Polygon> polygons;
+vector<pair<string, int>> operations;
 
 void parse_file(string file_name) {
 	std::ifstream ifs(file_name);
@@ -144,13 +151,12 @@ void parse_file(string file_name) {
 
 	vector<string> file_tokens = split(content, ';');
 
-	polygons = new Polygon[file_tokens.size()];
+	polygons.clear();
 	
-	for (int i = 0; i < file_tokens.size() - 1; i++) {
+	for (int i = 0; i < file_tokens.size(); i++) {
 		string current_polygon_data = file_tokens[i];
 		vector<string> polygon_points_data = split(current_polygon_data, '),');
-		Point* polygon_points = new Point[polygon_points_data.size() / 2];
-		int index = 0;
+		vector<Point> polygon_points;
 		
 		for (int j = 0; j < polygon_points_data.size(); j += 2) {
 			string remove_delim_x = polygon_points_data[j];
@@ -162,20 +168,25 @@ void parse_file(string file_name) {
 			remove_delim_y.erase(std::remove(remove_delim_y.begin(), remove_delim_y.end(), ')'), remove_delim_y.end());
 
 			Point point;
-			point.x = atof(remove_delim_x.c_str());
-			point.y = atof(remove_delim_y.c_str());
+			point.x = atoi(remove_delim_x.c_str());
+			point.y = atoi(remove_delim_y.c_str());
 
-			polygon_points[index++] = point;
+			polygon_points.push_back(point);
 		}
 
-		Polygon polygon = Polygon(polygon_points);
+		Polygon polygon = Polygon();
+		Point* points_array = new Point[polygon_points.size()];
+		copy(polygon_points.begin(), polygon_points.end(), points_array);
 
-		polygons[i] = polygon;
+		polygon.set_points(points_array);
+		polygon.set_num_points(polygon_points.size());
+
+		polygons.push_back(polygon);
 	}
 
 	string operations_line = file_tokens[file_tokens.size() - 1];
 	vector<string> operations_list = split(operations_line, ' ');
-	operations = new pair<string, int>[operations_list.size()];
+	operations.clear();
 
 	for (int i = 0; i < operations_list.size(); i++) {
 		string current_operation = operations_list[i];
@@ -213,14 +224,22 @@ void parse_file(string file_name) {
 			}
 		}
 
-		operations[i] = make_pair(existed_operation, operations_level);
+		operations.push_back(make_pair(existed_operation, operations_level));
+	}
+
+	for (int i = 0; i < polygons.size(); i++) {
+		cout << i << endl;
+
+		for (int j = 0; j < polygons[i].get_num_points(); j++) {
+			cout << polygons[i].get_point(j).x << " " <<  polygons[i].get_point(j).y << endl;
+		}
 	}
 }
 
 void operations_processing() {
 	cout << "\n\n OPERATIONS PROCESSING \n" << endl;
 
-	for (int i = 0; i < (sizeof(operations)/sizeof(*operations)); i++) {
+	for (int i = 0; i < operations.size(); i++) {
 
 	}
 }
