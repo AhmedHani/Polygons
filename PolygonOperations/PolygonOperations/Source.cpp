@@ -35,7 +35,8 @@ struct Point {
 	float y;
 };
 
-struct Polygon {
+class Polygon {
+public:
 	Point* p_points;
 };
 ///////////////// END OF STRUCTURES ////////////////////
@@ -142,6 +143,14 @@ void parse_file(string file_name) {
 		}
 
 		operations[i] = make_pair(existed_operation, operations_level);
+	}
+}
+
+void operations_processing() {
+	cout << "\n\n OPERATIONS PROCESSING \n" << endl;
+
+	for (int i = 0; i < (sizeof(operations)/sizeof(*operations)); i++) {
+
 	}
 }
 
