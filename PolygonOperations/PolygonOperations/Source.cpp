@@ -263,10 +263,8 @@ void display_data() {
 	for (int i = 0; i < operations.size(); i++) {
 		cout << operations[i].first << " Level #" << operations[i].second << endl;
 	}
-}
 
-bool myfunction (Point i, Point j) {
-	return (i.x == j.x && i.y == j.y);
+	cout << endl << endl;
 }
 
 void remove_redundant_points() {
@@ -286,8 +284,6 @@ void remove_redundant_points() {
 						continue;
 
 					if (are_collinear(itf->x, itf->y, its->x, its->y, itt->x, itt->y)) {
-						collinear_points.push_back(*itf);
-						collinear_points.push_back(*its);
 						collinear_points.push_back(*itt);
 					}
 				}
@@ -295,6 +291,7 @@ void remove_redundant_points() {
 		}
 
 		vector<Point> ignore;
+
 		for (int k = 0; k < collinear_points.size(); k += 3) {
 			Point p1 = collinear_points[k];
 			Point p2 = collinear_points[k + 1];
@@ -308,29 +305,39 @@ void remove_redundant_points() {
 
 		vector<Point> final_clean_points;
 
-		for (int k = 0; k < polygons[i].get_num_points(); k++) {
-			bool found = false;
+		if (!ignore.empty()) {
+			for (int k = 0; k < unique_points.size(); k++) {
+				bool found = false;
 
-			for (vector<Point>::iterator it = ignore.begin(); it != ignore.end(); it++) {
-				if (it->x == polygon_points[k].x && it->y == polygon_points[k].y) {
-					found = true;
+				for (vector<Point>::iterator it = ignore.begin(); it != ignore.end(); it++) {
+					if (it->x == polygon_points[k].x && it->y == polygon_points[k].y) {
+						found = true;
 
-					break;
+						break;
+					}
+				}
+
+				if (!found) {
+					final_clean_points.push_back(unique_points[k]);
 				}
 			}
 
-			if (!found) {
-				final_clean_points.push_back(polygon_points[k]);
-			}
+			copy(final_clean_points.begin(), final_clean_points.end(), polygon_points);
+
+			Polygon updated_polygon = Polygon();
+			updated_polygon.set_points(polygon_points);
+			updated_polygon.set_num_points(final_clean_points.size());
+
+			polygons[i] = updated_polygon;
+		} else {
+			copy(unique_points.begin(), unique_points.end(), polygon_points);
+
+			Polygon updated_polygon = Polygon();
+			updated_polygon.set_points(polygon_points);
+			updated_polygon.set_num_points(unique_points.size());
+
+			polygons[i] = updated_polygon;
 		}
-
-		copy(final_clean_points.begin(), final_clean_points.end(), polygon_points);
-
-		Polygon updated_polygon = Polygon();
-		updated_polygon.set_points(polygon_points);
-		updated_polygon.set_num_points(final_clean_points.size());
-
-		polygons[i] = updated_polygon;
 	}
 }
 
