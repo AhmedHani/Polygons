@@ -29,8 +29,8 @@ vector<std::string> split(string &text, char sep) {
 ///////////////// END OF FUNCTIONS //////////////
 
 struct Point {
-	int x;
-	int y;
+	float x;
+	float y;
 };
 
 struct Polygon {
@@ -64,8 +64,8 @@ void read_data(string file_name) {
 			remove_delim_y.erase(std::remove(remove_delim_y.begin(), remove_delim_y.end(), ')'), remove_delim_y.end());
 
 			Point point;
-			point.x = atoi(remove_delim_x.c_str());
-			point.y = atoi(remove_delim_y.c_str());
+			point.x = atof(remove_delim_x.c_str());
+			point.y = atof(remove_delim_y.c_str());
 
 			polygon_points[index++] = point;
 		}
