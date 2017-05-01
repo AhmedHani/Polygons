@@ -31,8 +31,8 @@ vector<std::string> split(string &text, char sep) {
 
 ///////////////// STRUCTURES ////////////////////
 struct Point {
-	int x;
-	int y;
+	float x;
+	float y;
 };
 
 class Polygon {
@@ -148,13 +148,14 @@ vector<pair<string, int>> operations;
 void parse_file(string file_name) {
 	std::ifstream ifs(file_name);
 	std::string content((std::istreambuf_iterator<char>(ifs)), (std::istreambuf_iterator<char>()));
+	vector<string> content_tokens = split(content, '\n');
 
-	vector<string> file_tokens = split(content, ';');
+	vector<string> polygons_data = split(content_tokens[0], ';');
 
 	polygons.clear();
 	
-	for (int i = 0; i < file_tokens.size(); i++) {
-		string current_polygon_data = file_tokens[i];
+	for (int i = 0; i < polygons_data.size(); i++) {
+		string current_polygon_data = polygons_data[i];
 		vector<string> polygon_points_data = split(current_polygon_data, '),');
 		vector<Point> polygon_points;
 		
@@ -184,12 +185,14 @@ void parse_file(string file_name) {
 		polygons.push_back(polygon);
 	}
 
-	string operations_line = file_tokens[file_tokens.size() - 1];
-	vector<string> operations_list = split(operations_line, ' ');
-	operations.clear();
+	vector<string> operations_list(content_tokens.begin() + 1, content_tokens.end());
 
 	for (int i = 0; i < operations_list.size(); i++) {
 		string current_operation = operations_list[i];
+
+		if (current_operation == "Quit")
+			break;
+
 		int operations_level = -1;
 		string existed_operation = "";
 
@@ -226,13 +229,23 @@ void parse_file(string file_name) {
 
 		operations.push_back(make_pair(existed_operation, operations_level));
 	}
+}
+
+void display_data() {
+	cout << "\n\nPolygons Data:" << endl << endl;
 
 	for (int i = 0; i < polygons.size(); i++) {
-		cout << i << endl;
+		cout << "Polygon #" << i << endl;
 
 		for (int j = 0; j < polygons[i].get_num_points(); j++) {
 			cout << polygons[i].get_point(j).x << " " <<  polygons[i].get_point(j).y << endl;
 		}
+	}
+
+	cout << "\n\nTarget Operations" << endl << endl;
+
+	for (int i = 0; i < operations.size(); i++) {
+		cout << operations[i].first << " Level #" << operations[i].second << endl;
 	}
 }
 
@@ -247,8 +260,7 @@ void operations_processing() {
 
 int main(int argc, char** argv) {
 	parse_file("input.txt");
-
-
+	display_data();
 
 	return 0;
 
