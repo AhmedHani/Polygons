@@ -5,6 +5,7 @@
 #include <string>
 #include <iostream>
 #include <fstream>
+#include <cmath>
 
 #define MAX_POINTS 100
 #define MAX_POLYGONS 100
@@ -27,13 +28,32 @@ vector<std::string> split(string &text, char sep) {
 
   return tokens;
 }
+
+double are_collinear(double x1, double y1, double x2, double y2, double x3, double y3) {
+	return (y1 - y2) * (x1 - x3) == (y1 - y3) * (x1 - x2);
+}
 ///////////////// END OF FUNCTIONS //////////////
 
 ///////////////// STRUCTURES ////////////////////
+
 struct Point {
-	float x;
-	float y;
+	double x;
+	double y;
+
+	bool operator< (const Point& pt) const
+    {
+        return (x < pt.x);
+    }
+
+	bool operator== (const Point& pt) const {
+		return (x == pt.x && y == pt.y);
+	}
+
+	bool operator> (const Point& pt) const {
+		return x > pt.x;
+	}
 };
+
 
 class Polygon {
 private:
@@ -44,19 +64,18 @@ public:
 	void set_points(Point* p_points) {
 		this->p_points = p_points;
 	}
-
 	void set_num_points(int num_of_points) {
 		this->num_points = num_of_points;
 	}
-
 	int get_num_points() {
 		return this->num_points;
 	}
-
+	Point* get_points() {
+		return this->p_points;
+	}
 	Point get_point(int index) {
 		return this->p_points[index];
 	}
-
 	int get_max_x() {
 		int max = -1;
 		Point max_point;
@@ -71,7 +90,6 @@ public:
 
 		return max_point.x;
 	}
-
 	int get_min_x() {
 		int max = INT_MAX;
 		Point max_point;
@@ -86,7 +104,6 @@ public:
 
 		return max_point.x;
 	}
-
 	int get_max_y() {
 		int max = -1;
 		Point max_point;
@@ -101,7 +118,6 @@ public:
 
 		return max_point.y;
 	}
-
 	int get_min_y() {
 		int max = INT_MAX;
 		Point max_point;
@@ -249,6 +265,75 @@ void display_data() {
 	}
 }
 
+bool myfunction (Point i, Point j) {
+	return (i.x == j.x && i.y == j.y);
+}
+
+void remove_redundant_points() {
+	for (int i = 0; i < polygons.size(); i++) {
+		Point* polygon_points = polygons[i].get_points();
+		vector<Point> unique_points(polygon_points, polygon_points + polygons[i].get_num_points());
+		unique_points.erase(unique(unique_points.begin(), unique_points.end()), unique_points.end());
+
+		vector<Point> collinear_points;
+
+		for (vector<Point>::iterator itf = unique_points.begin(); itf != unique_points.end(); itf++) {
+			for (vector<Point>::iterator its = unique_points.begin(); its != unique_points.end(); its++) {
+				for (vector<Point>::iterator itt = unique_points.begin(); itt != unique_points.end(); itt++) {
+					if (itf == its && itf == itt && itt == its)
+						continue;
+					if (itf == its || its == itt || itt == itf)
+						continue;
+
+					if (are_collinear(itf->x, itf->y, its->x, its->y, itt->x, itt->y)) {
+						collinear_points.push_back(*itf);
+						collinear_points.push_back(*its);
+						collinear_points.push_back(*itt);
+					}
+				}
+			}
+		}
+
+		vector<Point> ignore;
+		for (int k = 0; k < collinear_points.size(); k += 3) {
+			Point p1 = collinear_points[k];
+			Point p2 = collinear_points[k + 1];
+			Point p3 = collinear_points[k + 2];
+
+			ignore.push_back(p2);
+		}
+
+		sort(ignore.begin(), ignore.end());
+		ignore.erase(unique(ignore.begin(), ignore.end()), ignore.end());
+
+		vector<Point> final_clean_points;
+
+		for (int k = 0; k < polygons[i].get_num_points(); k++) {
+			bool found = false;
+
+			for (vector<Point>::iterator it = ignore.begin(); it != ignore.end(); it++) {
+				if (it->x == polygon_points[k].x && it->y == polygon_points[k].y) {
+					found = true;
+
+					break;
+				}
+			}
+
+			if (!found) {
+				final_clean_points.push_back(polygon_points[k]);
+			}
+		}
+
+		copy(final_clean_points.begin(), final_clean_points.end(), polygon_points);
+
+		Polygon updated_polygon = Polygon();
+		updated_polygon.set_points(polygon_points);
+		updated_polygon.set_num_points(final_clean_points.size());
+
+		polygons[i] = updated_polygon;
+	}
+}
+
 void operations_processing() {
 	cout << "\n\n OPERATIONS PROCESSING \n" << endl;
 
@@ -260,6 +345,7 @@ void operations_processing() {
 
 int main(int argc, char** argv) {
 	parse_file("input.txt");
+	remove_redundant_points();
 	display_data();
 
 	return 0;
