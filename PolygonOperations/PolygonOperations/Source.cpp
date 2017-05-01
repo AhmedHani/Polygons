@@ -36,8 +36,80 @@ struct Point {
 };
 
 class Polygon {
-public:
+private:
 	Point* p_points;
+	int num_points;
+
+public:
+	Polygon(Point* p_points) {
+		this->p_points = p_points;
+		this->num_points = (sizeof(p_points)/sizeof(*p_points));
+	}
+
+	int get_num_points() {
+		return this->num_points;
+	}
+
+	int get_max_x() {
+		int max = -1;
+		Point max_point;
+
+		for (int i = 0; i < this->num_points; i++) {
+			int current_x = this->p_points[i].x;
+
+			if (current_x > max) {
+				max_point = this->p_points[i];
+			}
+		}
+
+		return max_point.x;
+	}
+
+	int get_min_x() {
+		int max = INT_MAX;
+		Point max_point;
+
+		for (int i = 0; i < this->num_points; i++) {
+			int current_x = this->p_points[i].x;
+
+			if (current_x < max) {
+				max_point = this->p_points[i];
+			}
+		}
+
+		return max_point.x;
+	}
+
+	int get_max_y() {
+		int max = -1;
+		Point max_point;
+
+		for (int i = 0; i < this->num_points; i++) {
+			int current_y = this->p_points[i].y;
+
+			if (current_y > max) {
+				max_point = this->p_points[i];
+			}
+		}
+
+		return max_point.y;
+	}
+
+	int get_min_x() {
+		int max = INT_MAX;
+		Point max_point;
+
+		for (int i = 0; i < this->num_points; i++) {
+			int current_y = this->p_points[i].y;
+
+			if (current_y < max) {
+				max_point = this->p_points[i];
+			}
+		}
+
+		return max_point.y;
+	}
+
 };
 ///////////////// END OF STRUCTURES ////////////////////
 
@@ -96,8 +168,7 @@ void parse_file(string file_name) {
 			polygon_points[index++] = point;
 		}
 
-		Polygon polygon;
-		polygon.p_points = polygon_points;
+		Polygon polygon = Polygon(polygon_points);
 
 		polygons[i] = polygon;
 	}
