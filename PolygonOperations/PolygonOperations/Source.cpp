@@ -344,11 +344,49 @@ void remove_redundant_points() {
 }
 
 void operations_processing() {
+	cout << "RESULTS:" << endl << endl;
+
+	for (int i = 0; i < operations.size(); i++) {
+		if (operations[i].first == "Number_Polygons") {
+			cout << "Number of input Polygons are: " << polygons.size() << endl;
+		}
+
+		if (operations[i].first == "Total_Number_Points") {
+			for (int j = 0; j < polygons.size(); j++) {
+				cout << "Polygon #" << i <<  endl << "Number of Points are: " << polygons[i].get_num_points() << endl;
+			}
+		}
+	}
+
+	cout << endl << endl;
+
 	for (int i = 0; i < polygons.size(); i++) {
 		Polygon current_polygon = polygons[i];
 
+		cout << "Polygon #" << i << endl;
+
 		for (int j = 0; j < operations.size(); j++) {
 			pair<string, int> current_operation = operations[j];
+
+			if (current_operation.first == "Minimum_X") {
+				cout << "Minimum X: " << current_polygon.get_min_x() << endl;
+			}
+
+			if (current_operation.first == "Maximum_X") {
+				cout << "Maximum X: " << current_polygon.get_max_x() << endl;
+			}
+
+			if (current_operation.first == "Minimum_Y") {
+				cout << "Minimum Y: " << current_polygon.get_min_y() << endl;
+			}
+
+			if (current_operation.first == "Maximum_Y") {
+				cout << "Maximum Y: " << current_polygon.get_max_y() << endl;
+			}
+
+			if (current_operation.first == "Total_Redundant_Points") {
+				cout << "Total_Redundant_Points: " << current_polygon.get_redundant_points().size() << endl;
+			}
 		}
 	}
 }
@@ -356,8 +394,8 @@ void operations_processing() {
 
 int main(int argc, char** argv) {
 	parse_file("input.txt");
-	remove_redundant_points();
-	//display_data();
+	display_data();
+	operations_processing();
 
 	return 0;
 
