@@ -13,7 +13,7 @@
 
 using namespace std;
 
-///////////////// AUX FUNCTIONS ////////////////
+///////////////// HELPER FUNCTIONS ////////////////
 vector<std::string> split(string &text, char sep) {
   vector<std::string> tokens;
   int start = 0;
@@ -40,17 +40,16 @@ struct Point {
 	double x;
 	double y;
 
-	bool operator< (const Point& pt) const
-    {
+	bool operator< (const Point& pt) const {
         return (x < pt.x);
-    }
+	}
 
 	bool operator== (const Point& pt) const {
 		return (x == pt.x && y == pt.y);
 	}
 
 	bool operator> (const Point& pt) const {
-		return x > pt.x;
+		return (x > pt.x);
 	}
 };
 
@@ -58,7 +57,12 @@ struct Point {
 class Polygon {
 private:
 	Point* p_points;
+	Point* redundant_points;
 	int num_points;
+
+	double are_collinear(double x1, double y1, double x2, double y2, double x3, double y3) {
+		return (y1 - y2) * (x1 - x3) == (y1 - y3) * (x1 - x2);
+	}
 
 public:
 	void set_points(Point* p_points) {
@@ -132,7 +136,68 @@ public:
 
 		return max_point.y;
 	}
+	vector<Point> get_redundant_points() {
+		vector<Point> all_points(this->p_points, this->p_points + this->num_points);
+		vector<Point> unique_points(this->p_points, this->p_points + this->num_points);
+		unique_points.erase(unique(unique_points.begin(), unique_points.end()), unique_points.end());
 
+		vector<Point> redundant_points;
+		set<Point> visited_points;
+
+		for (int i = 0; i < all_points.size(); i++) {
+			bool found = false;
+
+			for (set<Point>::iterator it = visited_points.begin(); it != visited_points.end(); it++) {
+				if (it->x == all_points[i].x && it->y == all_points[i].y) {
+					found = true;
+
+					break;
+				}
+			}
+
+			if (found) {
+				redundant_points.push_back(all_points[i]);
+			} else {
+				visited_points.insert(all_points[i]);
+			}
+		}
+
+		vector<Point> collinear_points;
+
+		for (vector<Point>::iterator itf = unique_points.begin(); itf != unique_points.end(); itf++) {
+			for (vector<Point>::iterator its = unique_points.begin(); its != unique_points.end(); its++) {
+				for (vector<Point>::iterator itt = unique_points.begin(); itt != unique_points.end(); itt++) {
+					if (itf == its && itf == itt && itt == its)
+						continue;
+					if (itf == its || its == itt || itt == itf)
+						continue;
+
+					if (this->are_collinear(itf->x, itf->y, its->x, its->y, itt->x, itt->y)) {
+						collinear_points.push_back(*itt);
+					}
+				}
+			}
+		}
+
+		vector<Point> ignore;
+
+		for (int k = 0; k < collinear_points.size(); k += 3) {
+			Point p1 = collinear_points[k];
+			Point p2 = collinear_points[k + 1];
+			Point p3 = collinear_points[k + 2];
+
+			ignore.push_back(p2);
+		}
+
+		sort(ignore.begin(), ignore.end());
+		ignore.erase(unique(ignore.begin(), ignore.end()), ignore.end());
+
+		for (int i = 0; i < ignore.size(); i++) {
+			redundant_points.push_back(ignore[i]);
+		}
+
+		return redundant_points;
+	}
 };
 ///////////////// END OF STRUCTURES ////////////////////
 
@@ -267,6 +332,7 @@ void display_data() {
 	cout << endl << endl;
 }
 
+/*
 void remove_redundant_points() {
 	for (int i = 0; i < polygons.size(); i++) {
 		Point* polygon_points = polygons[i].get_points();
@@ -339,13 +405,26 @@ void remove_redundant_points() {
 			polygons[i] = updated_polygon;
 		}
 	}
+}*/
+
+void remove_redundant_points() {
+	for (int i = 0; i < polygons.size(); i++) {
+		cout << endl;
+		vector<Point> current_redundant = polygons[i].get_redundant_points();
+
+		for (int j = 0; j < current_redundant.size(); j++) {
+			cout << current_redundant[j].x << " " << current_redundant[j].y << endl;
+		}
+	}
 }
 
 void operations_processing() {
-	cout << "\n\n OPERATIONS PROCESSING \n" << endl;
+	for (int i = 0; i < polygons.size(); i++) {
+		Polygon current_polygon = polygons[i];
 
-	for (int i = 0; i < operations.size(); i++) {
-
+		for (int j = 0; j < operations.size(); j++) {
+			pair<string, int> current_operation = operations[j];
+		}
 	}
 }
 
@@ -353,7 +432,7 @@ void operations_processing() {
 int main(int argc, char** argv) {
 	parse_file("input.txt");
 	remove_redundant_points();
-	display_data();
+	//display_data();
 
 	return 0;
 
