@@ -1,41 +1,9 @@
-﻿Build started 5/2/2017 12:17:22 AM.
+﻿Build started 5/3/2017 10:26:32 PM.
      1>Project "G:\Github Repositories\Polygons\PolygonOperations\PolygonOperations\PolygonOperations.vcxproj" on node 2 (Build target(s)).
-     1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc110.pdb" /Gd /TP /analyze- /errorReport:prompt Source.cpp
-         Source.cpp
-     1>g:\github repositories\polygons\polygonoperations\polygonoperations\source.cpp(84): warning C4244: 'initializing' : conversion from 'double' to 'int', possible loss of data
-     1>g:\github repositories\polygons\polygonoperations\polygonoperations\source.cpp(91): warning C4244: 'return' : conversion from 'double' to 'int', possible loss of data
-     1>g:\github repositories\polygons\polygonoperations\polygonoperations\source.cpp(98): warning C4244: 'initializing' : conversion from 'double' to 'int', possible loss of data
-     1>g:\github repositories\polygons\polygonoperations\polygonoperations\source.cpp(105): warning C4244: 'return' : conversion from 'double' to 'int', possible loss of data
-     1>g:\github repositories\polygons\polygonoperations\polygonoperations\source.cpp(112): warning C4244: 'initializing' : conversion from 'double' to 'int', possible loss of data
-     1>g:\github repositories\polygons\polygonoperations\polygonoperations\source.cpp(119): warning C4244: 'return' : conversion from 'double' to 'int', possible loss of data
-     1>g:\github repositories\polygons\polygonoperations\polygonoperations\source.cpp(126): warning C4244: 'initializing' : conversion from 'double' to 'int', possible loss of data
-     1>g:\github repositories\polygons\polygonoperations\polygonoperations\source.cpp(133): warning C4244: 'return' : conversion from 'double' to 'int', possible loss of data
-     1>g:\github repositories\polygons\polygonoperations\polygonoperations\source.cpp(173): warning C4018: '<' : signed/unsigned mismatch
-     1>g:\github repositories\polygons\polygonoperations\polygonoperations\source.cpp(175): warning C4305: 'argument' : truncation from 'int' to 'char'
-     1>g:\github repositories\polygons\polygonoperations\polygonoperations\source.cpp(175): warning C4309: 'argument' : truncation of constant value
-     1>g:\github repositories\polygons\polygonoperations\polygonoperations\source.cpp(178): warning C4018: '<' : signed/unsigned mismatch
-     1>g:\github repositories\polygons\polygonoperations\polygonoperations\source.cpp(206): warning C4018: '<' : signed/unsigned mismatch
-     1>g:\github repositories\polygons\polygonoperations\polygonoperations\source.cpp(253): warning C4018: '<' : signed/unsigned mismatch
-     1>g:\github repositories\polygons\polygonoperations\polygonoperations\source.cpp(263): warning C4018: '<' : signed/unsigned mismatch
-     1>g:\github repositories\polygons\polygonoperations\polygonoperations\source.cpp(271): warning C4018: '<' : signed/unsigned mismatch
-     1>g:\github repositories\polygons\polygonoperations\polygonoperations\source.cpp(295): warning C4018: '<' : signed/unsigned mismatch
-     1>g:\github repositories\polygons\polygonoperations\polygonoperations\source.cpp(309): warning C4018: '<' : signed/unsigned mismatch
-     1>g:\github repositories\polygons\polygonoperations\polygonoperations\source.cpp(347): warning C4018: '<' : signed/unsigned mismatch
-     1>c:\program files (x86)\microsoft visual studio 11.0\vc\include\xutility(2176): warning C4996: 'std::_Copy_impl': Function call with parameters that may be unsafe - this call relies on the caller to check that the passed values are correct. To disable this warning, use -D_SCL_SECURE_NO_WARNINGS. See documentation on how to use Visual C++ 'Checked Iterators'
-                 c:\program files (x86)\microsoft visual studio 11.0\vc\include\xutility(2157) : see declaration of 'std::_Copy_impl'
-                 g:\github repositories\polygons\polygonoperations\polygonoperations\source.cpp(196) : see reference to function template instantiation '_OutIt std::copy<std::_Vector_iterator<_Myvec>,Point*>(_InIt,_InIt,_OutIt)' being compiled
-                 with
-                 [
-                     _OutIt=Point *,
-                     _Myvec=std::_Vector_val<std::_Simple_types<Point>>,
-                     _InIt=std::_Vector_iterator<std::_Vector_val<std::_Simple_types<Point>>>
-                 ]
-       Link:
-         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"G:\Github Repositories\Polygons\PolygonOperations\Debug\PolygonOperations.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"G:\Github Repositories\Polygons\PolygonOperations\Debug\PolygonOperations.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"G:\Github Repositories\Polygons\PolygonOperations\Debug\PolygonOperations.lib" /MACHINE:X86 Debug\Source.obj
+     1>Link:
          PolygonOperations.vcxproj -> G:\Github Repositories\Polygons\PolygonOperations\Debug\PolygonOperations.exe
      1>Done Building Project "G:\Github Repositories\Polygons\PolygonOperations\PolygonOperations\PolygonOperations.vcxproj" (Build target(s)).
 
 Build succeeded.
 
-Time Elapsed 00:00:01.38
+Time Elapsed 00:00:00.06
