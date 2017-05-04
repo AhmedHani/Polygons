@@ -6,6 +6,7 @@
 #include <iostream>
 #include <fstream>
 #include <cmath>
+#include <map>
 
 #define MAX_POINTS 100
 #define MAX_POLYGONS 100
@@ -15,18 +16,18 @@ using namespace std;
 
 ///////////////// HELPER FUNCTIONS ////////////////
 vector<string> split(string &text, char deli) {
-  vector<string> tokens;
-  int start = 0;
-  int end = 0;
+	vector<string> tokens;
+	int start = 0;
+	int end = 0;
 
-  while ((end = text.find(deli, start)) != string::npos) {
-    tokens.push_back(text.substr(start, end - start));
-    start = end + 1;
-  }
+	while ((end = text.find(deli, start)) != string::npos) {
+		tokens.push_back(text.substr(start, end - start));
+		start = end + 1;
+	}
 
-  tokens.push_back(text.substr(start));
+	tokens.push_back(text.substr(start));
 
-  return tokens;
+	return tokens;
 }
 
 double are_collinear(double x1, double y1, double x2, double y2, double x3, double y3) {
@@ -41,7 +42,7 @@ struct Point {
 	double y;
 
 	bool operator< (const Point& pt) const {
-        return (x < pt.x);
+		return (x < pt.x);
 	}
 
 	bool operator== (const Point& pt) const {
@@ -53,38 +54,64 @@ struct Point {
 	}
 };
 
-
 class Polygon {
 private:
 	Point* p_points;
-	Point* redundant_points;
-	int num_points;
+	int all_num_points;
+	vector<Point> redundant_points;
+	int redundant_num_points;
+	vector<Point> actual_points;
+	int actual_num_points;
 
 	double are_collinear(double x1, double y1, double x2, double y2, double x3, double y3) {
 		return (y1 - y2) * (x1 - x3) == (y1 - y3) * (x1 - x2);
 	}
+	double euclidean_distance(double x1, double y1, double x2, double y2) {
+		return sqrt(pow((x1 - x2), 2) + pow((y1 - y2), 2));
+	}
 
 public:
-	void set_points(Point* p_points) {
+	void set_all_points(Point* p_points, int num_points) {
 		this->p_points = p_points;
-	}
-	void set_num_points(int num_of_points) {
-		this->num_points = num_of_points;
-	}
-	int get_num_points() {
-		return this->num_points;
+		this->all_num_points = num_points;
+
+		this->remove_redundant_points();
 	}
 	Point* get_points() {
 		return this->p_points;
 	}
+	int get_num_points() {
+		return this->all_num_points;
+	}
 	Point get_point(int index) {
 		return this->p_points[index];
+	}
+	bool in_polygon(Point point) {
+		for (int i = 0; i < this->all_num_points; i++) {
+			if (this->p_points[i] == point) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+	vector<Point> get_redundant_points() {
+		return this->redundant_points;
+	}
+	int get_num_redundant_points() {
+		return this->redundant_points.size();
+	}
+	vector<Point> get_actual_points() {
+		return this->actual_points;
+	}
+	int get_num_actual_points() {
+		return this->actual_points.size();
 	}
 	int get_max_x() {
 		int max = -1;
 		Point max_point;
 
-		for (int i = 0; i < this->num_points; i++) {
+		for (int i = 0; i < this->all_num_points; i++) {
 			int current_x = this->p_points[i].x;
 
 			if (current_x > max) {
@@ -98,7 +125,7 @@ public:
 		int max = INT_MAX;
 		Point max_point;
 
-		for (int i = 0; i < this->num_points; i++) {
+		for (int i = 0; i < this->all_num_points; i++) {
 			int current_x = this->p_points[i].x;
 
 			if (current_x < max) {
@@ -112,7 +139,7 @@ public:
 		int max = -1;
 		Point max_point;
 
-		for (int i = 0; i < this->num_points; i++) {
+		for (int i = 0; i < this->all_num_points; i++) {
 			int current_y = this->p_points[i].y;
 
 			if (current_y > max) {
@@ -126,7 +153,7 @@ public:
 		int max = INT_MAX;
 		Point max_point;
 
-		for (int i = 0; i < this->num_points; i++) {
+		for (int i = 0; i < this->all_num_points; i++) {
 			int current_y = this->p_points[i].y;
 
 			if (current_y < max) {
@@ -136,12 +163,11 @@ public:
 
 		return max_point.y;
 	}
-	vector<Point> get_redundant_points() {
-		vector<Point> all_points(this->p_points, this->p_points + this->num_points);
-		vector<Point> unique_points(this->p_points, this->p_points + this->num_points);
+	vector<Point> remove_redundant_points() {
+		vector<Point> all_points(this->p_points, this->p_points + this->all_num_points);
+		vector<Point> unique_points(this->p_points, this->p_points + this->all_num_points);
 		unique_points.erase(unique(unique_points.begin(), unique_points.end()), unique_points.end());
 
-		vector<Point> redundant_points;
 		set<Point> visited_points;
 
 		for (int i = 0; i < all_points.size(); i++) {
@@ -156,7 +182,7 @@ public:
 			}
 
 			if (found) {
-				redundant_points.push_back(all_points[i]);
+				this->redundant_points.push_back(all_points[i]);
 			} else {
 				visited_points.insert(all_points[i]);
 			}
@@ -193,10 +219,94 @@ public:
 		ignore.erase(unique(ignore.begin(), ignore.end()), ignore.end());
 
 		for (int i = 0; i < ignore.size(); i++) {
-			redundant_points.push_back(ignore[i]);
+			this->redundant_points.push_back(ignore[i]);
+		}
+
+		for (int i = 0; i < unique_points.size(); i++) {
+			bool found = false;
+
+			for (int j = 0; j < redundant_points.size(); j++) {
+				if (this->redundant_points[j] == unique_points[i]) {
+					found = true;
+
+					break;
+				}
+			}
+
+			if (!found) {
+				this->actual_points.push_back(unique_points[i]);
+			}
 		}
 
 		return redundant_points;
+	}
+	double get_perimeter() {
+		double perimeter = 0.0;
+
+		for (int i = 0; i < this->actual_points.size() - 1; i++) {
+			Point current_point = this->actual_points[i];
+			Point next_point = this->actual_points[i + 1];
+
+			perimeter += this->euclidean_distance(current_point.x, current_point.y, next_point.x, next_point.y);
+		}
+
+		return perimeter;
+	}
+	bool is_triangle() {
+		return this->actual_points.size() == 3;
+	}
+	bool is_rectangle() {
+		if (this->actual_points.size() != 4) return false;
+
+		map<double, int> distances_frequency;
+
+		for (int i = 0; i < this->actual_points.size(); i++) {
+			Point current_point = this->actual_points[i];
+
+			for (int j = i + 1; j < this->actual_points.size(); j++) {
+				Point next_point = this->actual_points[j];
+
+				distances_frequency[this->euclidean_distance(current_point.x, current_point.x, next_point.x, next_point.y)]++;
+			}
+		}
+
+		if (distances_frequency.size() != 2) return false;
+
+		for (map<double, int>::iterator it = distances_frequency.begin(); it != distances_frequency.end(); it++) {
+			if (it->second != 2) return false;
+		}
+
+		return true;
+	}
+	bool is_trapezoid() {
+		if (this->actual_points.size() != 4) return false;
+		if (this->is_rectangle()) return false;
+
+		map<double, int> distances_frequency;
+
+		for (int i = 0; i < this->actual_points.size(); i++) {
+			Point current_point = this->actual_points[i];
+
+			for (int j = i + 1; j < this->actual_points.size(); j++) {
+				Point next_point = this->actual_points[j];
+
+				distances_frequency[this->euclidean_distance(current_point.x, current_point.x, next_point.x, next_point.y)]++;
+			}
+		}
+
+		if (distances_frequency.size() != 3) return false;
+
+		int count_equal = 0;
+
+		for (map<double, int>::iterator it = distances_frequency.begin(); it != distances_frequency.end(); it++) {
+			if (it->second == 2) {
+				count_equal++;
+			}
+		}
+
+		if (count_equal != 2) return false;
+
+		return true;
 	}
 };
 ///////////////// END OF STRUCTURES ////////////////////
@@ -213,15 +323,20 @@ const string level_1_supported_operations[] = {
 };
 
 const string level_2_supported_operations[] = {
-	""
+	"Polygon_Points",
+	"Point_Polygons",
+	"List_Polygons_Points",
+	"List_Points_Polygons",
+	"Polygon_Perimeter",
+	"List_Triangles",
+	"List_Rectangles",
+	"List_Trapezoid"
 };
 
 const string level_3_supported_operations[] = {
 	""
 };
-
 ////////////// END OF CONSTANTS ////////////////
-
 
 vector<Polygon> polygons;
 vector<pair<string, int>> operations;
@@ -234,12 +349,12 @@ void parse_file(string file_name) {
 	vector<string> polygons_data = split(content_tokens[0], ';');
 
 	polygons.clear();
-	
+
 	for (int i = 0; i < polygons_data.size(); i++) {
 		string current_polygon_data = polygons_data[i];
 		vector<string> polygon_points_data = split(current_polygon_data, '),');
 		vector<Point> polygon_points;
-		
+
 		for (int j = 0; j < polygon_points_data.size(); j += 2) {
 			string remove_delim_x = polygon_points_data[j];
 			remove_delim_x.erase(std::remove(remove_delim_x.begin(), remove_delim_x.end(), '('), remove_delim_x.end());
@@ -250,8 +365,8 @@ void parse_file(string file_name) {
 			remove_delim_y.erase(std::remove(remove_delim_y.begin(), remove_delim_y.end(), ')'), remove_delim_y.end());
 
 			Point point;
-			point.x = atoi(remove_delim_x.c_str());
-			point.y = atoi(remove_delim_y.c_str());
+			point.x = atof(remove_delim_x.c_str());
+			point.y = atof(remove_delim_y.c_str());
 
 			polygon_points.push_back(point);
 		}
@@ -260,19 +375,16 @@ void parse_file(string file_name) {
 		Point* points_array = new Point[polygon_points.size()];
 		copy(polygon_points.begin(), polygon_points.end(), points_array);
 
-		polygon.set_points(points_array);
-		polygon.set_num_points(polygon_points.size());
-
+		polygon.set_all_points(points_array, polygon_points.size());
 		polygons.push_back(polygon);
 	}
 
 	vector<string> operations_list(content_tokens.begin() + 1, content_tokens.end());
 
 	for (int i = 0; i < operations_list.size(); i++) {
-		string current_operation = operations_list[i];
+		string current_operation = split(operations_list[i], ' ')[0];
 
-		if (current_operation == "Quit")
-			break;
+		if (current_operation == "Quit") break;
 
 		int operations_level = -1;
 		string existed_operation = "";
@@ -332,65 +444,233 @@ void display_data() {
 	cout << endl << endl;
 }
 
-void remove_redundant_points() {
-	for (int i = 0; i < polygons.size(); i++) {
-		cout << endl;
-		vector<Point> current_redundant = polygons[i].get_redundant_points();
-
-		for (int j = 0; j < current_redundant.size(); j++) {
-			cout << current_redundant[j].x << " " << current_redundant[j].y << endl;
-		}
-	}
-}
-
 void operations_processing() {
 	cout << "RESULTS:" << endl << endl;
 
 	for (int i = 0; i < operations.size(); i++) {
-		if (operations[i].first == "Number_Polygons") {
-			cout << "Number of input Polygons are: " << polygons.size() << endl;
-		}
+		pair<string, int> current_operation = operations[i];
+		vector<string> operation_tokens = split(current_operation.first, ' ');
+		string operation_name = operation_tokens[0];
 
-		if (operations[i].first == "Total_Number_Points") {
-			for (int j = 0; j < polygons.size(); j++) {
-				cout << "Polygon #" << i <<  endl << "Number of Points are: " << polygons[i].get_num_points() << endl;
+		if (operation_tokens.size() == 1) {
+			if (operation_name == "Number_Polygons") {
+				cout << "Number of input Polygons are: " << polygons.size() << endl;
+			}
+
+			if (operation_name == "Total_Number_Points") {
+				for (int j = 0; j < polygons.size(); j++) {
+					cout << "Polygon #" << i <<  endl << "Number of Points are: " << polygons[j].get_num_points() << endl;
+				}
+			}
+
+			if (operation_name == "List_Triangles") {
+				string output = "";
+
+				for (int j = 0; j < polygons.size(); j++) {
+					if (polygons[j].is_triangle()) {
+						output += to_string(j + 1) + ",";
+					}
+				}
+
+				cout << "Polygons that form triangle: " << output.substr(0, output.size() - 1) << endl;
+			}
+
+			if (operation_name == "List_Rectangles") {
+				string output = "";
+
+				for (int j = 0; j < polygons.size(); j++) {
+					if (polygons[j].is_rectangle()) {
+						output += to_string(j + 1) + ",";
+					}
+				}
+
+				cout << "Polygons that form rectangle: " << output.substr(0, output.size() - 1) << endl;
+			}
+
+			if (operation_name == "List_Trapezoid") {
+				string output = "";
+
+				for (int j = 0; j < polygons.size(); j++) {
+					if (polygons[j].is_trapezoid()) {
+						output += to_string(j + 1) + ",";
+					}
+				}
+
+				cout << "Polygons that form trapezoid: " << output.substr(0, output.size() - 1) << endl;
+			}
+		} else if (operation_tokens.size() == 2) {
+			if (operation_name == "Point_Polygons") {
+				string point_string = operation_tokens[1];
+				vector<string> point_tokens = split(point_string, ',');
+				Point point;
+				point_tokens[0].erase(std::remove(point_tokens[0].begin(), point_tokens[0].end(), '('), point_tokens[0].end());
+				point.x = atof(point_tokens[0].c_str());
+				point_tokens[1].erase(std::remove(point_tokens[1].begin(), point_tokens[1].end(), ')'), point_tokens[1].end());
+				point.y = atof(point_tokens[1].c_str());
+
+				string output = "";
+
+				for (int k = 0; k < polygons.size(); k++) {
+					if (polygons[k].in_polygon(point)) {
+						output += to_string(k + 1) + ",";
+					}
+				}
+
+				cout << "Polygons that have point " << "(" << point.x << "," << point.y << "): " << output.substr(0, output.size() - 1) << endl;
+			}
+
+			else if (operation_name == "Polygon_Perimeter") {
+				int n = atoi(operation_tokens[1].c_str());
+
+				if (n <= polygons.size() - 1) {
+					Polygon polygon = polygons[n - 1];
+
+					cout << "Polygon #" << n << " perimeter: " << polygon.get_perimeter() << endl;
+				}
+			}
+
+		} else if (operation_tokens.size() == 3) {
+			if (operation_name == "List_Polygons_Points") {
+				string condition = operation_tokens[1];
+				int n = atoi(operation_tokens[2].c_str());
+
+				if (condition == "More") {
+					string output = "";
+
+					for (int k = 0; k < polygons.size(); k++) {
+						if (polygons[k].get_actual_points().size() > n) {
+							output += to_string(k + 1) + ",";
+						}
+					}
+
+					cout << "Polygons that have more than " << n << ": " << output.substr(0, output.size() - 1) << endl;
+				}
+
+				else if (condition == "Less") {
+					string output = "";
+
+					for (int k = 0; k < polygons.size(); k++) {
+						if (polygons[k].get_actual_points().size() < n) {
+							output += to_string(k + 1) + ",";
+						}
+					}
+					cout << "Polygons that have less than " << n << ": " << output.substr(0, output.size() - 1) << endl;
+				} 
+
+				else if (condition == "Equal") {
+					string output = "";
+
+					for (int k = 0; k < polygons.size(); k++) {
+						if (polygons[k].get_actual_points().size() == n) {
+							output += to_string(k + 1) + ",";
+						}
+					}
+
+					cout << "Polygons that have equal " << n << ": " << output.substr(0, output.size() - 1) << endl;
+				}
+			}
+
+			if (operation_name == "List_Points_Polygons") {
+				string condition = operation_tokens[1];
+				int n = atoi(operation_tokens[2].c_str());
+				map<Point, int> points_frequency;
+
+				for (int k = 0; k < polygons.size(); k++) {
+					vector<Point> points = polygons[k].get_actual_points();
+
+					for (int p = 0; p < points.size(); p++) {
+						points_frequency[points[p]]++;
+					}
+				}
+
+				string output = "";
+
+				if (condition == "More") {
+					for (map<Point, int>::iterator it = points_frequency.begin(); it != points_frequency.end(); it++) {
+						if (it->second > n) {
+							output += "(" + to_string(it->first.x) + "," + to_string(it->first.y) + "),";
+						}
+					}
+
+					cout << "Points that are in more than " << n << " polygons: " << output << endl;
+				}
+
+				else if (condition == "Less") {
+					for (map<Point, int>::iterator it = points_frequency.begin(); it != points_frequency.end(); it++) {
+						if (it->second < n) {
+							output += "(" + to_string(it->first.x) + "," + to_string(it->first.y) + "),";
+						}
+					}
+
+					cout << "Points that are in less than " << n << " polygons: " << output << endl;
+				}
+
+				else if (condition == "Equal") {
+					for (map<Point, int>::iterator it = points_frequency.begin(); it != points_frequency.end(); it++) {
+						if (it->second == n) {
+							output += "(" + to_string(it->first.x) + "," + to_string(it->first.y) + "),";
+						}
+					}
+
+					cout << "Points that are in equal than " << n << " polygons: " << output << endl;
+				}
 			}
 		}
-	}
 
-	cout << endl << endl;
+		cout << endl << endl;
 
-	for (int i = 0; i < polygons.size(); i++) {
-		Polygon current_polygon = polygons[i];
+		for (int i = 0; i < polygons.size(); i++) {
+			Polygon current_polygon = polygons[i];
 
-		cout << "Polygon #" << i << endl;
+			cout << "Polygon #" << i << endl;
 
-		for (int j = 0; j < operations.size(); j++) {
-			pair<string, int> current_operation = operations[j];
+			for (int j = 0; j < operations.size(); j++) {
+				pair<string, int> current_operation = operations[j];
+				vector<string> operation_tokens = split(current_operation.first, ' ');
+				string operation_name = operation_tokens[0];
 
-			if (current_operation.first == "Minimum_X") {
-				cout << "Minimum X: " << current_polygon.get_min_x() << endl;
-			}
+				if (operation_tokens.size() == 2) {
+					if (operation_name == "Polygon_Points") {
+						int n = atoi(operation_tokens[1].c_str());
 
-			if (current_operation.first == "Maximum_X") {
-				cout << "Maximum X: " << current_polygon.get_max_x() << endl;
-			}
+						if (n <= polygons.size() - 1) { 
+							Polygon polygon = polygons[n - 1];
+							vector<Point> points = polygon.get_actual_points();
 
-			if (current_operation.first == "Minimum_Y") {
-				cout << "Minimum Y: " << current_polygon.get_min_y() << endl;
-			}
+							string output = "";
 
-			if (current_operation.first == "Maximum_Y") {
-				cout << "Maximum Y: " << current_polygon.get_max_y() << endl;
-			}
+							for (int k = 0; k < points.size(); k++) {
+								output += "(" + to_string(points[k].x) + "," + to_string(points[k].y) + "),";
+							}
 
-			if (current_operation.first == "Total_Redundant_Points") {
-				cout << "Total_Redundant_Points: " << current_polygon.get_redundant_points().size() << endl;
+							cout << "Points are: " << output.substr(0, output.size() - 1) << endl;
+						}
+					}
+				} else {
+					if (operation_name == "Minimum_X") {
+						cout << "Minimum X: " << current_polygon.get_min_x() << endl;
+					}
+
+					if (operation_name == "Maximum_X") {
+						cout << "Maximum X: " << current_polygon.get_max_x() << endl;
+					}
+
+					if (operation_name == "Minimum_Y") {
+						cout << "Minimum Y: " << current_polygon.get_min_y() << endl;
+					}
+
+					if (operation_name == "Maximum_Y") {
+						cout << "Maximum Y: " << current_polygon.get_max_y() << endl;
+					}
+
+					if (operation_name == "Total_Redundant_Points") {
+						cout << "Total_Redundant_Points: " << current_polygon.get_redundant_points().size() << endl;
+					}
+				}
 			}
 		}
 	}
 }
-
 
 int main(int argc, char** argv) {
 	parse_file("input.txt");
@@ -398,5 +678,4 @@ int main(int argc, char** argv) {
 	operations_processing();
 
 	return 0;
-
 }
