@@ -14,6 +14,50 @@
 
 using namespace std;
 
+
+///////////////// CONSTANTS ///////////////////////////
+const string level_1_supported_operations[] = {
+	"Number_Polygons",
+	"Total_Number_Points",
+	"Minimum_X", "Maximum_X",
+	"Minimum_Y", "Maximum_Y",
+	"Enclosing_Rectangle",
+	"Total_Redundant_Points",
+	"Quit"
+};
+
+const string level_2_supported_operations[] = {
+	"Polygon_Points",
+	"Point_Polygons",
+	"List_Polygons_Points",
+	"List_Points_Polygons",
+	"Polygon_Perimeter",
+	"List_Triangles",
+	"List_Rectangles",
+	"List_Trapezoid"
+};
+
+const string level_3_supported_operations[] = {
+	"Inside_Rectangle",
+	"Inside_Circle",
+	"Polygon_Area",
+	"Polygons_Area_Range",
+	"Polygons_Enclosing_Point",
+	"Is_Intersecting",
+	"Intersecting_Group",
+	"Largest_Intersecting_Pair",
+	"Largest_Rectangle_Inside",
+	"Largest_Circle_Inside"
+};
+
+const string bonus_supported_operations[] = {
+	"Is_Connected",
+	"Is_Connected_Group",
+	"Maximum_Intersecting_Group",
+	"Maximum_Connected_Group"
+};
+////////////// END OF CONSTANTS ////////////////
+
 ///////////////// HELPER FUNCTIONS ////////////////
 vector<string> split(string &text, char deli) {
 	vector<string> tokens;
@@ -308,35 +352,49 @@ public:
 
 		return true;
 	}
+	bool in_rectangle(vector<Point> rectangle_points) {
+		double min_x, min_y = INT_MAX;
+		double max_x, max_y = INT_MIN;
+
+		for (int i = 0; i < rectangle_points.size(); i++) {
+			min_x = min(min_x, rectangle_points[i].x);
+			min_y = min(min_y, rectangle_points[i].y);
+			max_x = min(max_x, rectangle_points[i].x);
+			max_y = min(max_y, rectangle_points[i].y);
+		}
+
+		return (min_x <= this->get_min_x() && max_x >= this->get_max_x() && min_y <= this->get_min_y() && max_y >= this->get_max_y());
+	}
+	bool in_circle(Point center, double radius) {
+		for (int i = 0; i < this->actual_points.size(); i++) {
+			if (pow(this->actual_points[i].x - center.x, 2) 
+				+ pow(this->actual_points[i].y - center.y, 2) >= pow(radius, 2)) {
+					return false;
+			}
+		}
+
+		return true;
+	}
+	double get_area() {
+		//http://www.geeksforgeeks.org/area-of-a-polygon-with-given-n-ordered-vertices/
+		double area = 0.0;
+
+		vector<Point> sorted_points(this->actual_points.begin(), this->actual_points.end());
+		sort(sorted_points.begin(), sorted_points.end());
+
+		int last = this->actual_points.size() - 1;
+
+		for (int i = 0; i < this->actual_points.size(); i++) {
+			area += (this->actual_points[last].x + this->actual_points[i].x) 
+				* (this->actual_points[last].y + this->actual_points[i].y);
+
+			last = i;
+		}
+
+		return fabs(area / 2.0);
+	}
 };
 ///////////////// END OF STRUCTURES ////////////////////
-
-///////////////// CONSTANTS ///////////////////////////
-const string level_1_supported_operations[] = {
-	"Number_Polygons",
-	"Total_Number_Points",
-	"Minimum_X", "Maximum_X",
-	"Minimum_Y", "Maximum_Y",
-	"Enclosing_Rectangle",
-	"Total_Redundant_Points",
-	"Quit"
-};
-
-const string level_2_supported_operations[] = {
-	"Polygon_Points",
-	"Point_Polygons",
-	"List_Polygons_Points",
-	"List_Points_Polygons",
-	"Polygon_Perimeter",
-	"List_Triangles",
-	"List_Rectangles",
-	"List_Trapezoid"
-};
-
-const string level_3_supported_operations[] = {
-	""
-};
-////////////// END OF CONSTANTS ////////////////
 
 vector<Polygon> polygons;
 vector<pair<string, int>> operations;
@@ -527,6 +585,94 @@ void operations_processing() {
 
 					cout << "Polygon #" << n << " perimeter: " << polygon.get_perimeter() << endl;
 				}
+			}
+
+			else if (operation_name == "Polygon_Area") {
+				int n = atoi(operation_tokens[1].c_str());
+
+				if (n <= polygons.size() - 1) {
+					Polygon polygon = polygons[n - 1];
+
+					cout << "Polygon #" << n << " area: " << polygon.get_area() << endl;
+				}
+			}
+
+			else if (operation_name == "Polygons_Area_Range") {
+				string ranges_data = operation_tokens[1];
+				vector<string> ranges_tokens = split(ranges_data, ',');
+				double min_area = atof(ranges_tokens[0].c_str());
+				double max_area = atof(ranges_tokens[1].c_str());
+
+				string output = "";
+
+				for (int k = 0; k < polygons.size(); k++) {
+					double area = polygons[k].get_area();
+
+					if (area <= min_area && area >= max_area) {
+						output += to_string(k + 1) + ",";
+					}
+				}
+
+				cout << "Polygons that have area <= " << min_area << " and area >= " << max_area << ": "
+					<< output.substr(0, output.size() - 1) << endl;
+			}
+
+			else if (operation_name == "Inside_Rectangle") {
+				string rectangle_points_string = operation_tokens[1];
+				vector<string> rectangle_points_data = split(rectangle_points_string, '),');
+				vector<Point> rectangle_points;
+
+				for (int j = 0; j < rectangle_points_data.size(); j += 2) {
+					string remove_delim_x = rectangle_points_data[j];
+					remove_delim_x.erase(std::remove(remove_delim_x.begin(), remove_delim_x.end(), '('), remove_delim_x.end());
+					remove_delim_x.erase(std::remove(remove_delim_x.begin(), remove_delim_x.end(), ')'), remove_delim_x.end());
+
+					string remove_delim_y = rectangle_points_data[j + 1];
+					remove_delim_y.erase(std::remove(remove_delim_y.begin(), remove_delim_y.end(), '('), remove_delim_y.end());
+					remove_delim_y.erase(std::remove(remove_delim_y.begin(), remove_delim_y.end(), ')'), remove_delim_y.end());
+
+					Point point;
+					point.x = atof(remove_delim_x.c_str());
+					point.y = atof(remove_delim_y.c_str());
+
+					rectangle_points.push_back(point);
+				}
+
+				string output = "";
+
+				for (int k = 0; k < polygons.size(); k++) {
+					if (polygons[k].in_rectangle(rectangle_points)) {
+						output += to_string(k + 1) + ",";
+					}
+				}
+
+				cout << "Polygons that are inside rectangle " << rectangle_points_string 
+					<< ": " << output.substr(0, output.size() - 1) << endl;
+			}
+
+			else if (operation_name == "Inside_Circle") {
+				string circle_data = operation_tokens[1];
+				vector<string> circle_points_data = split(circle_data, '),');
+				double radius = atof(circle_points_data[1].c_str());
+				string unclean_point = circle_points_data[0];
+				Point circle_point;
+
+				unclean_point.erase(std::remove(unclean_point.begin(), unclean_point.end(), '('), unclean_point.end());
+				vector<string> point_string = split(unclean_point, ',');
+
+				circle_point.x = atof(point_string[0].c_str());
+				circle_point.y = atof(point_string[1].c_str());
+
+				string output = "";
+
+				for (int k = 0; k < polygons.size(); k++) {
+					if (polygons[k].in_circle(circle_point, radius)) {
+						output += to_string(k + 1) + ",";
+					}
+				}
+
+				cout << "Polygons that are inside circle " << circle_data 
+					<< ": " << output.substr(0, output.size() - 1) << endl;
 			}
 
 		} else if (operation_tokens.size() == 3) {
