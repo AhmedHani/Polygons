@@ -14,12 +14,12 @@
 using namespace std;
 
 ///////////////// HELPER FUNCTIONS ////////////////
-vector<std::string> split(string &text, char sep) {
-  vector<std::string> tokens;
+vector<string> split(string &text, char deli) {
+  vector<string> tokens;
   int start = 0;
   int end = 0;
 
-  while ((end = text.find(sep, start)) != string::npos) {
+  while ((end = text.find(deli, start)) != string::npos) {
     tokens.push_back(text.substr(start, end - start));
     start = end + 1;
   }
