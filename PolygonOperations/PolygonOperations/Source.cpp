@@ -352,7 +352,7 @@ public:
 
 		return true;
 	}
-	bool in_rectangle(vector<Point> rectangle_points) {
+	bool inside_rectangle(vector<Point> rectangle_points) {
 		double min_x, min_y = INT_MAX;
 		double max_x, max_y = INT_MIN;
 
@@ -365,7 +365,7 @@ public:
 
 		return (min_x <= this->get_min_x() && max_x >= this->get_max_x() && min_y <= this->get_min_y() && max_y >= this->get_max_y());
 	}
-	bool in_circle(Point center, double radius) {
+	bool inside_circle(Point center, double radius) {
 		for (int i = 0; i < this->actual_points.size(); i++) {
 			if (pow(this->actual_points[i].x - center.x, 2) 
 				+ pow(this->actual_points[i].y - center.y, 2) >= pow(radius, 2)) {
@@ -392,6 +392,26 @@ public:
 		}
 
 		return fabs(area / 2.0);
+	}
+	bool inside_polygon(Point point) {
+		//http://stackoverflow.com/questions/217578/how-can-i-determine-whether-a-2d-point-is-within-a-polygon
+		if (point.x < this->get_min_x() || point.x > this->get_max_x() || point.y < this->get_min_y() || point.y > this->get_max_y())
+			return false;
+
+		bool inside = false;
+		int last = this->actual_points.size() - 1;
+
+		for (int i = 0; i < this->actual_points.size(); i++) {
+			bool in_range = (this->actual_points[i].y > point.y) != (this->actual_points[last].y > point.y);
+
+			if (in_range && point.x < (this->actual_points[last].x - this->actual_points[i].x) * (point.y - this->actual_points[i].y) / (this->actual_points[last].y - this->actual_points[i].y) + this->actual_points[i].y) {
+				inside = !inside;
+			}
+
+			last = i;
+		}
+
+		return inside;
 	}
 };
 ///////////////// END OF STRUCTURES ////////////////////
@@ -641,7 +661,7 @@ void operations_processing() {
 				string output = "";
 
 				for (int k = 0; k < polygons.size(); k++) {
-					if (polygons[k].in_rectangle(rectangle_points)) {
+					if (polygons[k].inside_rectangle(rectangle_points)) {
 						output += to_string(k + 1) + ",";
 					}
 				}
@@ -666,13 +686,35 @@ void operations_processing() {
 				string output = "";
 
 				for (int k = 0; k < polygons.size(); k++) {
-					if (polygons[k].in_circle(circle_point, radius)) {
+					if (polygons[k].inside_circle(circle_point, radius)) {
 						output += to_string(k + 1) + ",";
 					}
 				}
 
 				cout << "Polygons that are inside circle " << circle_data 
 					<< ": " << output.substr(0, output.size() - 1) << endl;
+			}
+
+			else if (operation_name == "Polygons_Enclosing_Point") {
+				string point_data = operation_tokens[1];
+				Point point;
+				vector<string> point_tokens = split(point_data, ',');
+
+				point_tokens[0].erase(std::remove(point_tokens[0].begin(), point_tokens[0].end(), '('), point_tokens[0].end());
+				point_tokens[1].erase(std::remove(point_tokens[1].begin(), point_tokens[1].end(), '('), point_tokens[1].end());
+				
+				point.x = atof(point_tokens[0].c_str());
+				point.y = atof(point_tokens[1].c_str());
+
+				string output = "";
+
+				for (int k = 0; k < polygons.size(); k++) {
+					if (polygons[k].inside_polygon(point)) {
+						output += to_string(k + 1) + ",";
+					}
+				}
+
+				cout << "Polygons that have point " << point_data << " inside: " << output.substr(0, output.size() - 1) << endl;
 			}
 
 		} else if (operation_tokens.size() == 3) {
