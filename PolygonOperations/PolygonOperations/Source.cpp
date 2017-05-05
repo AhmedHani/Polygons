@@ -14,7 +14,6 @@
 
 using namespace std;
 
-
 ///////////////// CONSTANTS ///////////////////////////
 const string level_1_supported_operations[] = {
 	"Number_Polygons",
@@ -413,6 +412,9 @@ public:
 
 		return inside;
 	}
+	bool is_intersect(Polygon polygon) {
+
+	}
 };
 ///////////////// END OF STRUCTURES ////////////////////
 
@@ -702,7 +704,7 @@ void operations_processing() {
 
 				point_tokens[0].erase(std::remove(point_tokens[0].begin(), point_tokens[0].end(), '('), point_tokens[0].end());
 				point_tokens[1].erase(std::remove(point_tokens[1].begin(), point_tokens[1].end(), '('), point_tokens[1].end());
-				
+
 				point.x = atof(point_tokens[0].c_str());
 				point.y = atof(point_tokens[1].c_str());
 

@@ -1,66 +1,68 @@
-﻿Build started 5/4/2017 11:23:59 PM.
+﻿Build started 5/6/2017 12:00:21 AM.
      1>Project "G:\Github Repositories\Polygons\PolygonOperations\PolygonOperations\PolygonOperations.vcxproj" on node 2 (Rebuild target(s)).
      1>ClCompile:
          C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc110.pdb" /Gd /TP /analyze- /errorReport:prompt Source.cpp
          Source.cpp
-     1>g:\github repositories\polygons\polygonoperations\polygonoperations\source.cpp(159): warning C4244: 'initializing' : conversion from 'double' to 'int', possible loss of data
-     1>g:\github repositories\polygons\polygonoperations\polygonoperations\source.cpp(166): warning C4244: 'return' : conversion from 'double' to 'int', possible loss of data
-     1>g:\github repositories\polygons\polygonoperations\polygonoperations\source.cpp(173): warning C4244: 'initializing' : conversion from 'double' to 'int', possible loss of data
-     1>g:\github repositories\polygons\polygonoperations\polygonoperations\source.cpp(180): warning C4244: 'return' : conversion from 'double' to 'int', possible loss of data
-     1>g:\github repositories\polygons\polygonoperations\polygonoperations\source.cpp(187): warning C4244: 'initializing' : conversion from 'double' to 'int', possible loss of data
-     1>g:\github repositories\polygons\polygonoperations\polygonoperations\source.cpp(194): warning C4244: 'return' : conversion from 'double' to 'int', possible loss of data
-     1>g:\github repositories\polygons\polygonoperations\polygonoperations\source.cpp(201): warning C4244: 'initializing' : conversion from 'double' to 'int', possible loss of data
-     1>g:\github repositories\polygons\polygonoperations\polygonoperations\source.cpp(208): warning C4244: 'return' : conversion from 'double' to 'int', possible loss of data
-     1>g:\github repositories\polygons\polygonoperations\polygonoperations\source.cpp(217): warning C4018: '<' : signed/unsigned mismatch
-     1>g:\github repositories\polygons\polygonoperations\polygonoperations\source.cpp(254): warning C4018: '<' : signed/unsigned mismatch
-     1>g:\github repositories\polygons\polygonoperations\polygonoperations\source.cpp(265): warning C4018: '<' : signed/unsigned mismatch
-     1>g:\github repositories\polygons\polygonoperations\polygonoperations\source.cpp(269): warning C4018: '<' : signed/unsigned mismatch
-     1>g:\github repositories\polygons\polygonoperations\polygonoperations\source.cpp(272): warning C4018: '<' : signed/unsigned mismatch
-     1>g:\github repositories\polygons\polygonoperations\polygonoperations\source.cpp(290): warning C4018: '<' : signed/unsigned mismatch
-     1>g:\github repositories\polygons\polygonoperations\polygonoperations\source.cpp(307): warning C4018: '<' : signed/unsigned mismatch
-     1>g:\github repositories\polygons\polygonoperations\polygonoperations\source.cpp(310): warning C4018: '<' : signed/unsigned mismatch
-     1>g:\github repositories\polygons\polygonoperations\polygonoperations\source.cpp(331): warning C4018: '<' : signed/unsigned mismatch
-     1>g:\github repositories\polygons\polygonoperations\polygonoperations\source.cpp(334): warning C4018: '<' : signed/unsigned mismatch
-     1>g:\github repositories\polygons\polygonoperations\polygonoperations\source.cpp(359): warning C4018: '<' : signed/unsigned mismatch
-     1>g:\github repositories\polygons\polygonoperations\polygonoperations\source.cpp(369): warning C4018: '<' : signed/unsigned mismatch
-     1>g:\github repositories\polygons\polygonoperations\polygonoperations\source.cpp(387): warning C4018: '<' : signed/unsigned mismatch
-     1>g:\github repositories\polygons\polygonoperations\polygonoperations\source.cpp(411): warning C4018: '<' : signed/unsigned mismatch
-     1>g:\github repositories\polygons\polygonoperations\polygonoperations\source.cpp(413): warning C4305: 'argument' : truncation from 'int' to 'char'
-     1>g:\github repositories\polygons\polygonoperations\polygonoperations\source.cpp(413): warning C4309: 'argument' : truncation of constant value
-     1>g:\github repositories\polygons\polygonoperations\polygonoperations\source.cpp(416): warning C4018: '<' : signed/unsigned mismatch
-     1>g:\github repositories\polygons\polygonoperations\polygonoperations\source.cpp(442): warning C4018: '<' : signed/unsigned mismatch
-     1>g:\github repositories\polygons\polygonoperations\polygonoperations\source.cpp(488): warning C4018: '<' : signed/unsigned mismatch
-     1>g:\github repositories\polygons\polygonoperations\polygonoperations\source.cpp(498): warning C4018: '<' : signed/unsigned mismatch
-     1>g:\github repositories\polygons\polygonoperations\polygonoperations\source.cpp(508): warning C4018: '<' : signed/unsigned mismatch
-     1>g:\github repositories\polygons\polygonoperations\polygonoperations\source.cpp(519): warning C4018: '<' : signed/unsigned mismatch
-     1>g:\github repositories\polygons\polygonoperations\polygonoperations\source.cpp(527): warning C4018: '<' : signed/unsigned mismatch
-     1>g:\github repositories\polygons\polygonoperations\polygonoperations\source.cpp(539): warning C4018: '<' : signed/unsigned mismatch
-     1>g:\github repositories\polygons\polygonoperations\polygonoperations\source.cpp(551): warning C4018: '<' : signed/unsigned mismatch
-     1>g:\github repositories\polygons\polygonoperations\polygonoperations\source.cpp(571): warning C4018: '<' : signed/unsigned mismatch
-     1>g:\github repositories\polygons\polygonoperations\polygonoperations\source.cpp(583): warning C4018: '<=' : signed/unsigned mismatch
-     1>g:\github repositories\polygons\polygonoperations\polygonoperations\source.cpp(593): warning C4018: '<=' : signed/unsigned mismatch
-     1>g:\github repositories\polygons\polygonoperations\polygonoperations\source.cpp(608): warning C4018: '<' : signed/unsigned mismatch
-     1>g:\github repositories\polygons\polygonoperations\polygonoperations\source.cpp(622): warning C4305: 'argument' : truncation from 'int' to 'char'
-     1>g:\github repositories\polygons\polygonoperations\polygonoperations\source.cpp(622): warning C4309: 'argument' : truncation of constant value
-     1>g:\github repositories\polygons\polygonoperations\polygonoperations\source.cpp(625): warning C4018: '<' : signed/unsigned mismatch
-     1>g:\github repositories\polygons\polygonoperations\polygonoperations\source.cpp(643): warning C4018: '<' : signed/unsigned mismatch
-     1>g:\github repositories\polygons\polygonoperations\polygonoperations\source.cpp(655): warning C4305: 'argument' : truncation from 'int' to 'char'
-     1>g:\github repositories\polygons\polygonoperations\polygonoperations\source.cpp(655): warning C4309: 'argument' : truncation of constant value
-     1>g:\github repositories\polygons\polygonoperations\polygonoperations\source.cpp(668): warning C4018: '<' : signed/unsigned mismatch
-     1>g:\github repositories\polygons\polygonoperations\polygonoperations\source.cpp(686): warning C4018: '<' : signed/unsigned mismatch
-     1>g:\github repositories\polygons\polygonoperations\polygonoperations\source.cpp(687): warning C4018: '>' : signed/unsigned mismatch
-     1>g:\github repositories\polygons\polygonoperations\polygonoperations\source.cpp(698): warning C4018: '<' : signed/unsigned mismatch
-     1>g:\github repositories\polygons\polygonoperations\polygonoperations\source.cpp(699): warning C4018: '<' : signed/unsigned mismatch
-     1>g:\github repositories\polygons\polygonoperations\polygonoperations\source.cpp(709): warning C4018: '<' : signed/unsigned mismatch
-     1>g:\github repositories\polygons\polygonoperations\polygonoperations\source.cpp(724): warning C4018: '<' : signed/unsigned mismatch
-     1>g:\github repositories\polygons\polygonoperations\polygonoperations\source.cpp(727): warning C4018: '<' : signed/unsigned mismatch
+     1>g:\github repositories\polygons\polygonoperations\polygonoperations\source.cpp(158): warning C4244: 'initializing' : conversion from 'double' to 'int', possible loss of data
+     1>g:\github repositories\polygons\polygonoperations\polygonoperations\source.cpp(165): warning C4244: 'return' : conversion from 'double' to 'int', possible loss of data
+     1>g:\github repositories\polygons\polygonoperations\polygonoperations\source.cpp(172): warning C4244: 'initializing' : conversion from 'double' to 'int', possible loss of data
+     1>g:\github repositories\polygons\polygonoperations\polygonoperations\source.cpp(179): warning C4244: 'return' : conversion from 'double' to 'int', possible loss of data
+     1>g:\github repositories\polygons\polygonoperations\polygonoperations\source.cpp(186): warning C4244: 'initializing' : conversion from 'double' to 'int', possible loss of data
+     1>g:\github repositories\polygons\polygonoperations\polygonoperations\source.cpp(193): warning C4244: 'return' : conversion from 'double' to 'int', possible loss of data
+     1>g:\github repositories\polygons\polygonoperations\polygonoperations\source.cpp(200): warning C4244: 'initializing' : conversion from 'double' to 'int', possible loss of data
+     1>g:\github repositories\polygons\polygonoperations\polygonoperations\source.cpp(207): warning C4244: 'return' : conversion from 'double' to 'int', possible loss of data
+     1>g:\github repositories\polygons\polygonoperations\polygonoperations\source.cpp(216): warning C4018: '<' : signed/unsigned mismatch
+     1>g:\github repositories\polygons\polygonoperations\polygonoperations\source.cpp(253): warning C4018: '<' : signed/unsigned mismatch
+     1>g:\github repositories\polygons\polygonoperations\polygonoperations\source.cpp(264): warning C4018: '<' : signed/unsigned mismatch
+     1>g:\github repositories\polygons\polygonoperations\polygonoperations\source.cpp(268): warning C4018: '<' : signed/unsigned mismatch
+     1>g:\github repositories\polygons\polygonoperations\polygonoperations\source.cpp(271): warning C4018: '<' : signed/unsigned mismatch
+     1>g:\github repositories\polygons\polygonoperations\polygonoperations\source.cpp(289): warning C4018: '<' : signed/unsigned mismatch
+     1>g:\github repositories\polygons\polygonoperations\polygonoperations\source.cpp(306): warning C4018: '<' : signed/unsigned mismatch
+     1>g:\github repositories\polygons\polygonoperations\polygonoperations\source.cpp(309): warning C4018: '<' : signed/unsigned mismatch
+     1>g:\github repositories\polygons\polygonoperations\polygonoperations\source.cpp(330): warning C4018: '<' : signed/unsigned mismatch
+     1>g:\github repositories\polygons\polygonoperations\polygonoperations\source.cpp(333): warning C4018: '<' : signed/unsigned mismatch
+     1>g:\github repositories\polygons\polygonoperations\polygonoperations\source.cpp(358): warning C4018: '<' : signed/unsigned mismatch
+     1>g:\github repositories\polygons\polygonoperations\polygonoperations\source.cpp(368): warning C4018: '<' : signed/unsigned mismatch
+     1>g:\github repositories\polygons\polygonoperations\polygonoperations\source.cpp(386): warning C4018: '<' : signed/unsigned mismatch
+     1>g:\github repositories\polygons\polygonoperations\polygonoperations\source.cpp(403): warning C4018: '<' : signed/unsigned mismatch
+     1>g:\github repositories\polygons\polygonoperations\polygonoperations\source.cpp(433): warning C4018: '<' : signed/unsigned mismatch
+     1>g:\github repositories\polygons\polygonoperations\polygonoperations\source.cpp(435): warning C4305: 'argument' : truncation from 'int' to 'char'
+     1>g:\github repositories\polygons\polygonoperations\polygonoperations\source.cpp(435): warning C4309: 'argument' : truncation of constant value
+     1>g:\github repositories\polygons\polygonoperations\polygonoperations\source.cpp(438): warning C4018: '<' : signed/unsigned mismatch
+     1>g:\github repositories\polygons\polygonoperations\polygonoperations\source.cpp(464): warning C4018: '<' : signed/unsigned mismatch
+     1>g:\github repositories\polygons\polygonoperations\polygonoperations\source.cpp(510): warning C4018: '<' : signed/unsigned mismatch
+     1>g:\github repositories\polygons\polygonoperations\polygonoperations\source.cpp(520): warning C4018: '<' : signed/unsigned mismatch
+     1>g:\github repositories\polygons\polygonoperations\polygonoperations\source.cpp(530): warning C4018: '<' : signed/unsigned mismatch
+     1>g:\github repositories\polygons\polygonoperations\polygonoperations\source.cpp(541): warning C4018: '<' : signed/unsigned mismatch
+     1>g:\github repositories\polygons\polygonoperations\polygonoperations\source.cpp(549): warning C4018: '<' : signed/unsigned mismatch
+     1>g:\github repositories\polygons\polygonoperations\polygonoperations\source.cpp(561): warning C4018: '<' : signed/unsigned mismatch
+     1>g:\github repositories\polygons\polygonoperations\polygonoperations\source.cpp(573): warning C4018: '<' : signed/unsigned mismatch
+     1>g:\github repositories\polygons\polygonoperations\polygonoperations\source.cpp(593): warning C4018: '<' : signed/unsigned mismatch
+     1>g:\github repositories\polygons\polygonoperations\polygonoperations\source.cpp(605): warning C4018: '<=' : signed/unsigned mismatch
+     1>g:\github repositories\polygons\polygonoperations\polygonoperations\source.cpp(615): warning C4018: '<=' : signed/unsigned mismatch
+     1>g:\github repositories\polygons\polygonoperations\polygonoperations\source.cpp(630): warning C4018: '<' : signed/unsigned mismatch
+     1>g:\github repositories\polygons\polygonoperations\polygonoperations\source.cpp(644): warning C4305: 'argument' : truncation from 'int' to 'char'
+     1>g:\github repositories\polygons\polygonoperations\polygonoperations\source.cpp(644): warning C4309: 'argument' : truncation of constant value
+     1>g:\github repositories\polygons\polygonoperations\polygonoperations\source.cpp(647): warning C4018: '<' : signed/unsigned mismatch
+     1>g:\github repositories\polygons\polygonoperations\polygonoperations\source.cpp(665): warning C4018: '<' : signed/unsigned mismatch
+     1>g:\github repositories\polygons\polygonoperations\polygonoperations\source.cpp(677): warning C4305: 'argument' : truncation from 'int' to 'char'
+     1>g:\github repositories\polygons\polygonoperations\polygonoperations\source.cpp(677): warning C4309: 'argument' : truncation of constant value
+     1>g:\github repositories\polygons\polygonoperations\polygonoperations\source.cpp(690): warning C4018: '<' : signed/unsigned mismatch
+     1>g:\github repositories\polygons\polygonoperations\polygonoperations\source.cpp(713): warning C4018: '<' : signed/unsigned mismatch
+     1>g:\github repositories\polygons\polygonoperations\polygonoperations\source.cpp(730): warning C4018: '<' : signed/unsigned mismatch
+     1>g:\github repositories\polygons\polygonoperations\polygonoperations\source.cpp(731): warning C4018: '>' : signed/unsigned mismatch
+     1>g:\github repositories\polygons\polygonoperations\polygonoperations\source.cpp(742): warning C4018: '<' : signed/unsigned mismatch
+     1>g:\github repositories\polygons\polygonoperations\polygonoperations\source.cpp(743): warning C4018: '<' : signed/unsigned mismatch
+     1>g:\github repositories\polygons\polygonoperations\polygonoperations\source.cpp(753): warning C4018: '<' : signed/unsigned mismatch
      1>g:\github repositories\polygons\polygonoperations\polygonoperations\source.cpp(768): warning C4018: '<' : signed/unsigned mismatch
-     1>g:\github repositories\polygons\polygonoperations\polygonoperations\source.cpp(773): warning C4018: '<' : signed/unsigned mismatch
-     1>g:\github repositories\polygons\polygonoperations\polygonoperations\source.cpp(782): warning C4018: '<=' : signed/unsigned mismatch
-     1>g:\github repositories\polygons\polygonoperations\polygonoperations\source.cpp(788): warning C4018: '<' : signed/unsigned mismatch
+     1>g:\github repositories\polygons\polygonoperations\polygonoperations\source.cpp(771): warning C4018: '<' : signed/unsigned mismatch
+     1>g:\github repositories\polygons\polygonoperations\polygonoperations\source.cpp(812): warning C4018: '<' : signed/unsigned mismatch
+     1>g:\github repositories\polygons\polygonoperations\polygonoperations\source.cpp(817): warning C4018: '<' : signed/unsigned mismatch
+     1>g:\github repositories\polygons\polygonoperations\polygonoperations\source.cpp(826): warning C4018: '<=' : signed/unsigned mismatch
+     1>g:\github repositories\polygons\polygonoperations\polygonoperations\source.cpp(832): warning C4018: '<' : signed/unsigned mismatch
      1>c:\program files (x86)\microsoft visual studio 11.0\vc\include\xutility(2176): warning C4996: 'std::_Copy_impl': Function call with parameters that may be unsafe - this call relies on the caller to check that the passed values are correct. To disable this warning, use -D_SCL_SECURE_NO_WARNINGS. See documentation on how to use Visual C++ 'Checked Iterators'
                  c:\program files (x86)\microsoft visual studio 11.0\vc\include\xutility(2157) : see declaration of 'std::_Copy_impl'
-                 g:\github repositories\polygons\polygonoperations\polygonoperations\source.cpp(434) : see reference to function template instantiation '_OutIt std::copy<std::_Vector_iterator<_Myvec>,Point*>(_InIt,_InIt,_OutIt)' being compiled
+                 g:\github repositories\polygons\polygonoperations\polygonoperations\source.cpp(456) : see reference to function template instantiation '_OutIt std::copy<std::_Vector_iterator<_Myvec>,Point*>(_InIt,_InIt,_OutIt)' being compiled
                  with
                  [
                      _OutIt=Point *,
@@ -74,4 +76,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:03.98
+Time Elapsed 00:00:02.90
