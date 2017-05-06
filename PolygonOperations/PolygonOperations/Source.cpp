@@ -84,6 +84,13 @@ struct Point {
 	double x;
 	double y;
 
+	Point() {}
+
+	Point(double x, double y) {
+		this->x = x;
+		this->y = y;
+	}
+
 	bool operator< (const Point& pt) const {
 		return (x < pt.x);
 	}
@@ -95,7 +102,18 @@ struct Point {
 	bool operator> (const Point& pt) const {
 		return (x > pt.x);
 	}
+
+	Point operator+ (const Point& pt);
+	Point operator- (const Point& pt);
 };
+
+Point Point::operator+(const Point& pt) {
+	return Point(this->x + pt.x, this->y + pt.y);
+}
+
+Point Point::operator-(const Point& pt) {
+	return Point(this->x - pt.x, this->y - pt.y);
+}
 
 class Polygon {
 private:
