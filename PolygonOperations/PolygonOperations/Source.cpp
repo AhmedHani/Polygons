@@ -72,10 +72,6 @@ vector<string> split(string &text, char deli) {
 
 	return tokens;
 }
-
-double are_collinear(double x1, double y1, double x2, double y2, double x3, double y3) {
-	return (y1 - y2) * (x1 - x3) == (y1 - y3) * (x1 - x2);
-}
 ///////////////// END OF FUNCTIONS //////////////
 
 ///////////////// STRUCTURES ////////////////////
@@ -114,6 +110,18 @@ Point Point::operator+(const Point& pt) {
 Point Point::operator-(const Point& pt) {
 	return Point(this->x - pt.x, this->y - pt.y);
 }
+
+struct Segment {
+	Point start;
+	Point end;
+
+	Segment() {}
+
+	Segment(Point start, Point end) {
+		this->start = start;
+		this->end = end;
+	}
+};
 
 class Polygon {
 private:
@@ -431,6 +439,7 @@ public:
 		return inside;
 	}
 	bool is_intersect(Polygon polygon) {
+		vector<Point> other_polygon_points = polygon.get_actual_points();
 
 	}
 };
