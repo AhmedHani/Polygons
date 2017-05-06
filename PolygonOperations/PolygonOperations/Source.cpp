@@ -121,6 +121,18 @@ struct Segment {
 		this->start = start;
 		this->end = end;
 	}
+
+	bool operator< (const Segment& seg) const {
+		return (this->start.x < seg.start.x);
+	}
+
+	bool operator== (const Segment& seg) const {
+		return (this->start.x == seg.start.x && this->start.y == seg.start.y);
+	}
+
+	bool operator> (const Segment& seg) const {
+		return (this->start.x > seg.start.x);
+	}
 };
 
 class Polygon {
