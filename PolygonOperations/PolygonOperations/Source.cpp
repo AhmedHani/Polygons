@@ -603,7 +603,7 @@ void operations_processing() {
 					}
 				}
 
-				cout << "Polygons that form rectangle: " << output.substr(0, output.size() - 1) << endl;
+				cout << "Polygons that form rectangle:" << output.substr(0, output.size() - 1) << endl;
 			}
 
 			if (operation_name == "List_Trapezoid") {
